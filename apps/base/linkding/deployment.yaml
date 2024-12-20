@@ -24,3 +24,5 @@ spec:
         - name: linkding-storage
           persistentVolumeClaim:
             claimName: linkding-storage
+      securityContext:
+        runAsUser: 33
