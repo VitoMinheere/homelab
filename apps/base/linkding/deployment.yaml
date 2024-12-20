@@ -15,6 +15,8 @@ spec:
       containers:
         - name: linkding
           image: sissbruecker/linkding:1.31.0
+          securityContext:
+            allowPrivilegeEscalation: false
           ports:
             - containerPort: 9090
           volumeMounts:
@@ -25,4 +27,6 @@ spec:
           persistentVolumeClaim:
             claimName: linkding-storage
       securityContext:
-        runAsUser: 33
+        fsGroup: 33 # www-data group ID
+        runAsUser: 33 # www-data user ID
+        runAsGroup: 33 # www-data group ID
