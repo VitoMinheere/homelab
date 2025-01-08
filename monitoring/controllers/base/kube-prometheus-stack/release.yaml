@@ -37,8 +37,8 @@ spec:
         hosts:
           - grafana.vitominheere.xyz
 
-        tls: []
-        # - secretName: grafana-tls-secret
-        #   hosts:
-        #   - grafana.vitominheere.xyz
+        tls:
+        - secretName: grafana-tls-secret
+          hosts:
+          - grafana.vitominheere.xyz
 
