@@ -68,7 +68,7 @@ data:
   config.yaml: |
     # Name of the tunnel you want to run
     
-    tunnel: homelab
+    tunnel: audiobook
 
     credentials-file: /etc/cloudflared/creds/credentials.json
 
@@ -78,7 +78,7 @@ data:
 
     ingress:
     - hostname: audiobookshelf.vitominheere.xyz
-      service: http://audiobookshelf:13378
+      service: http://audiobookshelf:3005
 
     # This rule sends traffic to the built-in hello-world HTTP server. This can help debug connectivity
     # issues. If hello.example.com resolves and tunnel.example.com does not, then the problem is
