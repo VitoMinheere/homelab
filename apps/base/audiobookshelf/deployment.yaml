@@ -37,9 +37,9 @@ spec:
           persistentVolumeClaim:
             claimName: audiobookshelf-storage
       securityContext:
-        fsGroup: 1000 # node group ID
-        runAsUser: 1000 # node user ID
-        runAsGroup: 1000 # node group ID
+        fsGroup: 33 # www-data group ID
+        runAsUser: 33 # www-data user ID
+        runAsGroup: 33 # www-data group ID
       envFrom:
             - configMapRef:
                 name: audiobookshelf-config
