@@ -2,7 +2,6 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: audiobookshelf-storage
-  namespace: audiobookshelf
 spec:
   accessModes:
     - ReadWriteOnce
