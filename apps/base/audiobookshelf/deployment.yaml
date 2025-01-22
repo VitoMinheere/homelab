@@ -18,7 +18,8 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
           ports:
-            - containerPort: 13378
+            - containerPort: 3005
+              protocol: TCP
           volumeMounts:
             - name: audiobookshelf-storage
               mountPath: /audiobooks

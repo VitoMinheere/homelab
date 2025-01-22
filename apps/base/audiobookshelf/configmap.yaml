@@ -4,9 +4,9 @@ metadata:
   name: audiobookshelf-config
   namespace: audiobookshelf
 data:
+  PORT: "3005"
   METADATA_PATH: "/usr/share/audiobookshelf/metadata"
   CONFIG_PATH: "/usr/share/audiobookshelf/config"
   FFMPEG_PATH: "/usr/lib/audiobookshelf-ffmpeg/ffmpeg"
   FFPROBE_PATH: "/usr/lib/audiobookshelf-ffmpeg/ffprobe"
   TONE_PATH: "/usr/lib/audiobookshelf-ffmpeg/tone"
-  PORT: "13378"
