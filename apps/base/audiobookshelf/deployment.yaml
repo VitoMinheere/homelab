@@ -45,5 +45,5 @@ spec:
         runAsUser: 33 # www-data user ID
         runAsGroup: 33 # www-data group ID
       envFrom:
-            - configMapRef:
-                name: audiobookshelf-configmap
+        - configMapRef:
+            name: audiobookshelf-configmap
