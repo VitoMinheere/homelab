@@ -5,5 +5,4 @@ metadata:
 data:
   PUID: "33"
   PGID: "33"
-  PORT: "9283"
   TZ: "Etc/GMT-1"

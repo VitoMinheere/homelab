@@ -18,9 +18,9 @@ spec:
           envFrom:
             - configMapRef:
                 name: grocy-configmap
-          ports:
-            - containerPort: 9283
-              protocol: TCP
+          # ports:
+          #   - containerPort: 9283
+          #     protocol: TCP
 
           volumeMounts:
             - name: grocy-storage
