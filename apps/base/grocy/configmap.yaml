@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: grocy-configmap
 data:
-  PUID: "1000"
-  PGID: "1000"
+  PUID: "33"
+  PGID: "33"
   TZ: "Etc/GMT-1"
