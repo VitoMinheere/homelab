@@ -15,8 +15,6 @@ spec:
       containers:
         - name: grocy
           image: lscr.io/linuxserver/grocy:latest
-          securityContext:
-            allowPrivilegeEscalation: false
           envFrom:
             - configMapRef:
                 name: grocy-configmap
@@ -32,8 +30,4 @@ spec:
         - name: grocy-storage
           persistentVolumeClaim:
             claimName: grocy-storage
-      securityContext:
-        fsGroup: 33 # www-data group ID
-        runAsUser: 33 # www-data user ID
-        runAsGroup: 33 # www-data group ID
       
