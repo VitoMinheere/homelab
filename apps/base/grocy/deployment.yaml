@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grocy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grocy
+  template:
+    metadata:
+      labels:
+        app: grocy
+    spec:
+      containers:
+        - name: grocy
+          image: lscr.io/linuxserver/grocy:latest
+          securityContext:
+            allowPrivilegeEscalation: false
+          envFrom:
+            - configMapRef:
+                name: grocy-configmap
+          ports:
+            - containerPort: 9283
+              protocol: TCP
+
+          volumeMounts:
+            - name: grocy-storage
+              mountPath: /config
+
+      volumes:
+        - name: grocy-storage
+          persistentVolumeClaim:
+            claimName: grocy-storage
+      securityContext:
+        fsGroup: 1000 # www-data group ID
+        runAsUser: 1000 # www-data user ID
+        runAsGroup: 1000 # www-data group ID
+      
