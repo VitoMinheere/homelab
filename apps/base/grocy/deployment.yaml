@@ -24,7 +24,7 @@ spec:
 
           volumeMounts:
             - name: grocy-storage
-              mountPath: /config
+              mountPath: /data
 
       volumes:
         - name: grocy-storage
