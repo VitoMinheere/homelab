@@ -5,6 +5,8 @@ metadata:
 spec:
   ports:
     - port: 9090
+      targetPort: 9090
+      nodePort: 30090
   selector:
     app: linkding
-  type: ClusterIP
+  type: NodePort
