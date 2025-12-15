@@ -19,6 +19,17 @@ spec:
           ports:
             - containerPort: 5432
               name: postgres
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-container-env
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-container-env
+                  key: POSTGRES_PASSWORD
           volumeMounts:
             - name: postgres-data
               mountPath: /var/lib/postgresql/data
@@ -26,6 +37,3 @@ spec:
         - name: postgres-data
           persistentVolumeClaim:
             claimName: postgres-data
-      envFrom:
-        - secretRef:
-            name: postgres-container-env
