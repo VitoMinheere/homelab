@@ -34,10 +34,7 @@ spec:
             - name: postgres-data
               mountPath: /var/lib/postgresql
             - name: init-scripts
-              mountPath: /tmp
-          command: ["/bin/bash", "-c"]
-          args:
-            - chmod +x /tmp/init-users.sh && /tmp/init-users.sh && docker-entrypoint.sh postgres
+              mountPath: /docker-entrypoint-initdb.d
       volumes:
         - name: postgres-data
           persistentVolumeClaim:
