@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-scripts
+data:
+  init-users.sql.template: |
+    CREATE USER linkding WITH ENCRYPTED PASSWORD '${LINKDING_USER_PASSWORD}';
+    CREATE DATABASE linkding;
+    GRANT ALL PRIVILEGES ON DATABASE linkding TO linkding;
+
+  init-users.sh: |
+    #!/bin/bash
+    set -e
+    export LINKDING_USER_PASSWORD=$(cat /etc/postgres-secrets/LINKDING_USER_PASSWORD)
+    envsubst < /docker-entrypoint-initdb.d/init-users.sql.template > /docker-entrypoint-initdb.d/init-users.sql
