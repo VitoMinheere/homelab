@@ -19,7 +19,7 @@ spec:
           image: postgres:18
           envFrom:
             - secretRef:
-                name: postgres-secrets
+                name: postgres-container-env
           volumeMounts:
             - name: apps-list
               mountPath: /apps
