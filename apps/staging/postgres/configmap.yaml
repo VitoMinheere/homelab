@@ -11,5 +11,4 @@ data:
   init-users.sh: |
     #!/bin/bash
     set -e
-    export LINKDING_USER_PASSWORD=$(cat /etc/postgres-secrets/LINKDING_USER_PASSWORD)
     envsubst < /docker-entrypoint-initdb.d/init-users.sql.template > /docker-entrypoint-initdb.d/init-users.sql
