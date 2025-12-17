@@ -11,4 +11,6 @@ data:
   init-users.sh: |
     #!/bin/bash
     set -e
-    envsubst < /tmp/init-users.sql.template > /tmp/init-users.sql
+    envsubst < init-users.sql.template > init-users.sql
+    PGPASSWORD="$POSTGRES_PASSWORD" psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" -f /tmp/init-users.sql
+
