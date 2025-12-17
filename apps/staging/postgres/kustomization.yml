@@ -5,3 +5,4 @@ resources:
   - ../../base/postgres
   - postgres-container-env-secret.yaml
   - configmap-apps.yaml
+  - init-job.yaml

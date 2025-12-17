@@ -14,49 +14,6 @@ spec:
       labels:
         app: postgres
     spec:
-      initContainers:
-        - name: postgres-init
-          image: postgres:18
-          envFrom:
-            - secretRef:
-                name: postgres-container-env
-          volumeMounts:
-            - name: apps-list
-              mountPath: /apps
-          command:
-            - bash
-            - -c
-            - |
-              set -e
-
-              until pg_isready -h postgres -U "$POSTGRES_USER"; do
-                sleep 2
-              done
-
-              while read -r APP; do
-                [ -z "$APP" ] && continue
-                PASS_VAR="${APP}_USER_PASSWORD"
-                DB_PASS="${!PASS_VAR}"
-
-                if [ -z "$DB_PASS" ]; then
-                  echo "Missing password for $APP"
-                  exit 1
-                fi
-
-                psql -h postgres -U "$POSTGRES_USER" <<EOF
-              DO \$\$
-              BEGIN
-                IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '$APP') THEN
-                  CREATE ROLE $APP LOGIN PASSWORD '$DB_PASS';
-                END IF;
-              END
-              \$\$;
-
-              CREATE DATABASE $APP OWNER $APP;
-              REVOKE ALL ON DATABASE $APP FROM PUBLIC;
-              ALTER ROLE $APP NOSUPERUSER NOCREATEDB NOCREATEROLE;
-              EOF
-              done < /apps/apps
       containers:
         - name: postgres
           image: postgres:18
