@@ -35,7 +35,7 @@ spec:
 
               while read -r APP; do
                 [ -z "$APP" ] && continue
-                PASS_VAR="${APP}_PASSWORD"
+                PASS_VAR="${APP}_USER_PASSWORD"
                 DB_PASS="${!PASS_VAR}"
 
                 if [ -z "$DB_PASS" ]; then
