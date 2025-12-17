@@ -44,18 +44,18 @@ spec:
                 fi
 
                 psql -h postgres -U "$POSTGRES_USER" <<EOF
-DO \$\$
-BEGIN
-  IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '$APP') THEN
-    CREATE ROLE $APP LOGIN PASSWORD '$DB_PASS';
-  END IF;
-END
-\$\$;
+              DO \$\$
+              BEGIN
+                IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '$APP') THEN
+                  CREATE ROLE $APP LOGIN PASSWORD '$DB_PASS';
+                END IF;
+              END
+              \$\$;
 
-CREATE DATABASE $APP OWNER $APP;
-REVOKE ALL ON DATABASE $APP FROM PUBLIC;
-ALTER ROLE $APP NOSUPERUSER NOCREATEDB NOCREATEROLE;
-EOF
+              CREATE DATABASE $APP OWNER $APP;
+              REVOKE ALL ON DATABASE $APP FROM PUBLIC;
+              ALTER ROLE $APP NOSUPERUSER NOCREATEDB NOCREATEROLE;
+              EOF
               done < /apps/apps
       containers:
         - name: postgres
