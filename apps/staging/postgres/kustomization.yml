@@ -4,4 +4,4 @@ namespace: postgres
 resources:
   - ../../base/postgres
   - postgres-container-env-secret.yaml
-  - configmap.yaml
+  - configmap-apps.yaml
