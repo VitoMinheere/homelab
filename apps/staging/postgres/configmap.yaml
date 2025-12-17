@@ -11,4 +11,4 @@ data:
   init-users.sh: |
     #!/bin/bash
     set -e
-    envsubst < /docker-entrypoint-initdb.d/init-users.sql.template > /docker-entrypoint-initdb.d/init-users.sql
+    envsubst < /tmp/init-users.sql.template > /tmp/init-users.sql
