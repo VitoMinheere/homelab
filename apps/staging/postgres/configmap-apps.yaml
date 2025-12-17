@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-name: postgres-apps
+  name: postgres-apps
 data:
-apps: |
-  linkding
+  apps: |
+    linkding
