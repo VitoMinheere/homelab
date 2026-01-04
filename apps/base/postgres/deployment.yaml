@@ -30,6 +30,3 @@ spec:
         - name: postgres-data
           persistentVolumeClaim:
             claimName: postgres-data
-        - name: apps-list
-          configMap:
-            name: postgres-apps
