@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lubelogger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lubelogger
+  template:
+    metadata:
+      labels:
+        app: lubelogger
+    spec:
+      containers:
+        - name: lubelogger
+          image: hargata/lubelogger:v1.5.6
+          envFrom:
+            - configMapRef:
+                name: lubelogger-configmap
+          # ports:
+          #   - containerPort: 9283
+          #     protocol: TCP
+
+          volumeMounts:
+            - name: lubelogger-storage
+              mountPath: /var/www/data
+
+      volumes:
+        - name: lubelogger-storage
+          persistentVolumeClaim:
+            claimName: lubelogger-storage
+
