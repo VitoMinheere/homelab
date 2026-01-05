@@ -20,6 +20,8 @@ spec:
               value: 'production'
             - name: APP_DEBUG
               value: 'false'
+            - name: DB_CONNECTION
+              value: 'pgsql'
           envFrom:
             - secretRef:
                 name: firefly-iii-container-env
