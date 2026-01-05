@@ -19,7 +19,7 @@ spec:
             - secretRef:
                 name: lubelogger-container-env
           ports:
-            - containerPort: 9283
+            - containerPort: 8080
           volumeMounts:
             - name: lubelogger-storage
               mountPath: /var/www/data

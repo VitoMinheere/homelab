@@ -4,8 +4,8 @@ metadata:
   name: lubelogger
 spec:
   ports:
-    - port: 9283
-      targetPort: 9283
+    - port: 8080
+      targetPort: 8080
       nodePort: 30283
   selector:
     app: lubelogger
