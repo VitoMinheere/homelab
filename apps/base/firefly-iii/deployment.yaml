@@ -16,8 +16,10 @@ spec:
         - name: firefly-iii
           image: fireflyiii/core:version-6.4.9
           env:
-          - APP_ENV: production
-            APP_DEBUG: false
+            - name: APP_ENV
+              value: production
+            - name: APP_DEBUG
+              value: false
           envFrom:
             - secretRef:
                 name: firefly-iii-container-env
