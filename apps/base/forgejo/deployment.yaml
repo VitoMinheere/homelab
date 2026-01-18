@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: forgejo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: forgejo
+  template:
+    metadata:
+      labels:
+        app: forgejo
+    spec:
+      containers:
+        - name: forgejo
+          image: codeberg.org/forgejo/forgejo:13
+          envFrom:
+            - secretRef:
+                name: forgejo-container-env
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: forgejo-storage
+              mountPath: /var/www/data
+
+      volumes:
+        - name: forgejo-storage
+          persistentVolumeClaim:
+            claimName: forgejo-storage
+
