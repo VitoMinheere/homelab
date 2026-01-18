@@ -14,11 +14,14 @@ spec:
     spec:
       containers:
         - name: linkding
-          image: sissbruecker/linkding:1.36.0
+          image: sissbruecker/linkding:1.38.0
           securityContext:
             allowPrivilegeEscalation: false
           ports:
             - containerPort: 9090
+          envFrom:
+            - secretRef:
+                name: linkding-container-env
           volumeMounts:
             - name: linkding-storage
               mountPath: /etc/linkding/data
@@ -30,8 +33,3 @@ spec:
         fsGroup: 33 # www-data group ID
         runAsUser: 33 # www-data user ID
         runAsGroup: 33 # www-data group ID
-      envFrom:
-        # - configMapRef:
-        #     name: linkding-config
-        - secretRef:
-            name: linkding-container-env

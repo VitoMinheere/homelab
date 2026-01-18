@@ -3,4 +3,6 @@ kind: Kustomization
 resources:
   - linkding
   - audiobookshelf
-  - grocy
+  - postgres
+  - lubelogger
+  - firefly-iii
