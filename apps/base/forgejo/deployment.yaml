@@ -19,7 +19,7 @@ spec:
             - secretRef:
                 name: forgejo-container-env
           ports:
-            - containerPort: 8080
+            - containerPort: 3000
           volumeMounts:
             - name: forgejo-storage
               mountPath: /var/www/data
