@@ -22,7 +22,7 @@ spec:
             - containerPort: 3000
           volumeMounts:
             - name: forgejo-storage
-              mountPath: /var/www/data
+              mountPath: /forgejo/data
 
       volumes:
         - name: forgejo-storage
