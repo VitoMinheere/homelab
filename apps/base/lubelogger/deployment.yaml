@@ -16,6 +16,8 @@ spec:
         - name: lubelogger
           image: hargata/lubelogger:v1.5.6
           envFrom:
+            - configMapRef:
+                name: lubelogger-configmap
             - secretRef:
                 name: lubelogger-container-env
           ports:
