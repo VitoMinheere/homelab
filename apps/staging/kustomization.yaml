@@ -7,3 +7,4 @@ resources:
   - lubelogger
   - firefly-iii
   - forgejo
+  - ejbca
