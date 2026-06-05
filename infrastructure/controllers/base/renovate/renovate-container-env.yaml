@@ -16,6 +16,6 @@ sops:
             -----END AGE ENCRYPTED FILE-----
           recipient: age15q8xgjrfpg3prhup4c05dzk788tr3u799w8mh5khue4umt2jmulqmgmvwv
     encrypted_regex: ^(data|stringData)$
-    lastmodified: "2026-06-05T15:03:14Z"
+    lastmodified: "2026-06-05T15:03:15Z"
     mac: ENC[AES256_GCM,data:Vvwaiy8hQkJVAzHlgzp0uqMRSgvmin/XQn5T3SS1YzsDEpBs7POfFa+OF8OjjnIqY+tfYIKRRRxDbd8m1dzsbxRFddnTKFVnfnwZr9cANxPX+OcOIXu4n82/X9MWtZLFaG9LUSRSoN7xa14/bpWvqRuFTvDwgRKtqqXyJ2jK0Sc=,iv:kYyBtSLdO7rKeJYxJHt5LFS1vcVX94rVNRH6mQobBS0=,tag:uSfCWlvXreKJb5eNg9JhCA==,type:str]
     version: 3.13.1
