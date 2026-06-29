@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: forgejo
-          image: codeberg.org/forgejo/forgejo:13
+          image: codeberg.org/forgejo/forgejo:15
           envFrom:
             - secretRef:
                 name: forgejo-container-env
