@@ -251,7 +251,7 @@ spec:
         app.kubernetes.io/component: web
     spec:
       serviceAccountName: kubernetes-dashboard-web
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         seccompProfile:
@@ -278,6 +278,9 @@ spec:
               name: nginx-cache
             - mountPath: /var/lib/nginx/tmp
               name: nginx-tmp
+            # - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+            #   name: kube-api-access
+            #   readOnly: true
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -301,6 +304,12 @@ spec:
           emptyDir: {}
         - name: nginx-tmp
           emptyDir: {}
+        # - name: kube-api-access
+        #   projected:
+        #     sources:
+        #     - service_account_token:
+        #         expiration_seconds: 3600
+        #         path: token
 
 # ── METRICS-SCRAPER ───────────────────────────────────────────────────────────
 
@@ -413,7 +422,7 @@ spec:
         app.kubernetes.io/component: kong
     spec:
       serviceAccountName: kubernetes-dashboard-kong
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
