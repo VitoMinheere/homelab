@@ -24,10 +24,16 @@ spec:
               cpu: "500m"
           ports:
             - containerPort: 80
+          env:
+            - name: TZ
+              value: "Europe/Amsterdam"
           volumeMounts:
             - name: wallos-storage
-              mountPath: /app/storage
-
+              mountPath: /var/www/html/db
+              subPath: db
+            - name: wallos-storage
+              mountPath: /var/www/html/images/uploads/logos
+              subPath: logos
       volumes:
         - name: wallos-storage
           persistentVolumeClaim:
