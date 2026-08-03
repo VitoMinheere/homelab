@@ -206,9 +206,6 @@ spec:
           volumeMounts:
             - mountPath: /tmp
               name: tmp-volume
-            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
-              name: admin-user-token
-              readOnly: true
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -226,9 +223,6 @@ spec:
       volumes:
         - name: tmp-volume
           emptyDir: {}
-        - name: admin-user-token
-          secret:
-            secretName: admin-user
 
 # ── WEB ───────────────────────────────────────────────────────────────────────
 
@@ -284,9 +278,6 @@ spec:
               name: nginx-cache
             - mountPath: /var/lib/nginx/tmp
               name: nginx-tmp
-            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
-              name: admin-user-token
-              readOnly: true
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -310,9 +301,6 @@ spec:
           emptyDir: {}
         - name: nginx-tmp
           emptyDir: {}
-        - name: admin-user-token
-          secret:
-            secretName: admin-user
 
 
 # ── METRICS-SCRAPER ───────────────────────────────────────────────────────────
