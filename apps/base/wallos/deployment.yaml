@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wallos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wallos
+  template:
+    metadata:
+      labels:
+        app: wallos
+    spec:
+      containers:
+        - name: wallos
+          image: bellamy/wallos:5.4.2
+          envFrom:
+            - secretRef:
+                name: wallos-container-env
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: wallos-storage
+              mountPath: /var/www
+
+      volumes:
+        - name: wallos-storage
+          persistentVolumeClaim:
+            claimName: wallos-storage
+
