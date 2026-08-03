@@ -8,4 +8,5 @@ resources:
   - networkpolicy.yaml
   - rbac.yaml
   - read-only-user.yaml
+  - admin-user.yaml
 
