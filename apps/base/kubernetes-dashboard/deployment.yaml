@@ -251,7 +251,7 @@ spec:
         app.kubernetes.io/component: web
     spec:
       serviceAccountName: kubernetes-dashboard-web
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         seccompProfile:
