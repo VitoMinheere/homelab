@@ -7,4 +7,5 @@ resources:
   - configmap.yaml
   - networkpolicy.yaml
   - rbac.yaml
+  - read-only-user.yaml
 
