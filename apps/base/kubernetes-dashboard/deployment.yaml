@@ -228,7 +228,7 @@ spec:
           emptyDir: {}
         - name: admin-user-token
           secret:
-            secretName: admin-user-token
+            secretName: admin-user
 
 # ── WEB ───────────────────────────────────────────────────────────────────────
 
@@ -312,7 +312,7 @@ spec:
           emptyDir: {}
         - name: admin-user-token
           secret:
-            secretName: admin-user-token
+            secretName: admin-user
 
 
 # ── METRICS-SCRAPER ───────────────────────────────────────────────────────────
