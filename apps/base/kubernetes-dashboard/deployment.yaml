@@ -278,9 +278,9 @@ spec:
               name: nginx-cache
             - mountPath: /var/lib/nginx/tmp
               name: nginx-tmp
-            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
-              name: kube-api-access
-              readOnly: true
+            # - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+            #   name: kube-api-access
+            #   readOnly: true
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -304,12 +304,12 @@ spec:
           emptyDir: {}
         - name: nginx-tmp
           emptyDir: {}
-        - name: kube-api-access
-          projected:
-            sources:
-            - service_account_token:
-                expiration_seconds: 3600
-                path: token
+        # - name: kube-api-access
+        #   projected:
+        #     sources:
+        #     - service_account_token:
+        #         expiration_seconds: 3600
+        #         path: token
 
 # ── METRICS-SCRAPER ───────────────────────────────────────────────────────────
 
