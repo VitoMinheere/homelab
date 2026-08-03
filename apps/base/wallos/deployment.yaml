@@ -15,9 +15,6 @@ spec:
       containers:
         - name: wallos
           image: bellamy/wallos:5.4.2
-          envFrom:
-            - secretRef:
-                name: wallos-container-env
           ports:
             - containerPort: 8080
           volumeMounts:
