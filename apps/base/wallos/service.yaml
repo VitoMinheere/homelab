@@ -4,9 +4,9 @@ metadata:
   name: wallos
 spec:
   ports:
-    - port: 8080
-      targetPort: 8080
-      nodePort: 30287
+    - port: 8282
+      targetPort: 80
+      nodePort: 30282
   selector:
     app: wallos
   type: NodePort

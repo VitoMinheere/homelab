@@ -16,7 +16,7 @@ spec:
         - name: wallos
           image: bellamy/wallos:5.4.2
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           volumeMounts:
             - name: wallos-storage
               mountPath: /var/www
