@@ -106,7 +106,7 @@ spec:
         app.kubernetes.io/component: api
     spec:
       serviceAccountName: kubernetes-dashboard-api
-      automountServiceAccountToken: true
+      automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
         seccompProfile:
@@ -206,6 +206,9 @@ spec:
           volumeMounts:
             - mountPath: /tmp
               name: tmp-volume
+            - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+              name: admin-user-token
+              readOnly: true
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -223,6 +226,9 @@ spec:
       volumes:
         - name: tmp-volume
           emptyDir: {}
+        - name: admin-user-token
+          secret:
+            secretName: admin-user-token
 
 # ── WEB ───────────────────────────────────────────────────────────────────────
 
