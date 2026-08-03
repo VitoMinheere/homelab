@@ -106,7 +106,7 @@ spec:
         app.kubernetes.io/component: api
     spec:
       serviceAccountName: kubernetes-dashboard-api
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         seccompProfile:
@@ -302,7 +302,6 @@ spec:
         - name: nginx-tmp
           emptyDir: {}
 
-
 # ── METRICS-SCRAPER ───────────────────────────────────────────────────────────
 
 ---
@@ -414,7 +413,7 @@ spec:
         app.kubernetes.io/component: kong
     spec:
       serviceAccountName: kubernetes-dashboard-kong
-      automountServiceAccountToken: true
+      automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
