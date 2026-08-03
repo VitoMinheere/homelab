@@ -14,12 +14,19 @@ spec:
     spec:
       containers:
         - name: wallos
-          image: bellamy/wallos:5.4.2
+          image: ghcr.io/ellite/wallos:5.4.2
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
           ports:
             - containerPort: 80
           volumeMounts:
             - name: wallos-storage
-              mountPath: /var/www
+              mountPath: /app/storage
 
       volumes:
         - name: wallos-storage
