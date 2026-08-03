@@ -8,3 +8,4 @@ resources:
   - firefly-iii
   - forgejo
   - wallos
+  - kubernetes-dashboard
