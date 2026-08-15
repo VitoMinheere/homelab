@@ -7,4 +7,3 @@ resources:
   - networkpolicy.yaml
   - storage.yaml
   - service.yaml
-  - pvc.yaml
