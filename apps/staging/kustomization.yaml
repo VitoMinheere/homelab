@@ -7,5 +7,6 @@ resources:
   - lubelogger
   - firefly-iii
   - forgejo
+  - forgejo-runner
   - wallos
   - kubernetes-dashboard
