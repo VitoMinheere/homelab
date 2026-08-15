@@ -5,7 +5,6 @@ data:
       level: info
 
     runner:
-      file: .runner
       capacity: 1
       timeout: 3h
       insecure: false
@@ -28,6 +27,13 @@ data:
       options:
       valid_volumes: []
       docker_host: tcp://localhost:2375
+
+    server:
+      connections:
+        forgejo:
+          url: http://192.168.2.24:30285/
+          uuid: 07b071cd-8cf4-4c5d-90ce-0a8b04edaff3
+          token_url: file:/secrets/runner-token/token
 kind: ConfigMap
 metadata:
   name: forgejo-runner-config

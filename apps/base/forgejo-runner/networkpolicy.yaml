@@ -29,3 +29,11 @@ spec:
           protocol: TCP
         - port: 443
           protocol: TCP
+    # Forgejo NodePort (192.168.2.24:30285) — a node IP, not a pod, so it isn't
+    # covered by the namespaceSelector or 80/443-only rules above.
+    - to:
+        - ipBlock:
+            cidr: 192.168.2.0/24
+      ports:
+        - port: 30285
+          protocol: TCP
