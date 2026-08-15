@@ -68,19 +68,17 @@ spec:
           if [ ! -f /data/.runner ]; then
             echo "Registering runner..."
             forgejo-runner create-runner-file \
-              --instance https://forgejo.mischavandenburg.net \
-              --secret "${RUNNER_SECRET}" \
-              --name "jotunheim-runner"
+              --instance http://192.168.2.24:30285 \
+              --uuid "${RUNNER_UUID}" \
+              --token "${RUNNER_TOKEN}" \
+              --name "staging-runner"
             mv .runner /data/.runner
           else
             echo "Runner already registered"
           fi
-        env:
-        - name: RUNNER_SECRET
-          valueFrom:
-            secretKeyRef:
-              key: RUNNER_SECRET
-              name: forgejo-runner-secret
+        envFrom:
+          - secretRef:
+              name: forgejo-runner-container-env
         image: data.forgejo.org/forgejo/runner:6.4.0
         name: register-runner
         volumeMounts:
