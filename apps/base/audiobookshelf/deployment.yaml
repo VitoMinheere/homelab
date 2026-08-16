@@ -32,6 +32,9 @@ spec:
               mountPath: /podcasts
               subPath: podcasts
             - name: audiobookshelf-storage
+              mountPath: /ebooks
+              subPath: books
+            - name: audiobookshelf-storage
               mountPath: /config
               subPath: config
             - name: audiobookshelf-storage
