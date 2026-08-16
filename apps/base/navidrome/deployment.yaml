@@ -44,8 +44,8 @@ spec:
         - name: data
           hostPath:
             path: /data/navidrome/data
-            type: Directory
+            type: DirectoryOrCreate
         - name: music
           hostPath:
             path: /data/navidrome/music
-            type: Directory
+            type: DirectoryOrCreate
