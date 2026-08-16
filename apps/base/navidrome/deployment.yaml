@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: navidrome-deployment
+  namespace: navidrome
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: navidrome
+  template:
+    metadata:
+      labels:
+        app: navidrome
+    spec:
+      containers:
+        - name: navidrome
+          image: ghcr.io/navidrome/navidrome:0.49.3
+          ports:
+            - containerPort: 4533
+          env:
+            - name: ND_SCANSCHEDULE
+              value: "12h"
+            - name: ND_SESSIONTIMEOUT
+              value: "24h"
+            - name: ND_LOGLEVEL
+              value: "info"
+            - name: ND_ENABLETRANSCODINGCONFIG
+              value: "false"
+            - name: ND_TRANSCODINGCACHESIZE
+              value: "512MB"
+            - name: ND_ENABLESTARRATING
+              value: "false"
+            - name: ND_ENABLEFAVOURITES
+              value: "false"
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: music
+              mountPath: /music
+              readOnly: true
+      volumes:
+        - name: data
+          hostPath:
+            path: /data/navidrome/data
+            type: Directory
+        - name: music
+          hostPath:
+            path: /data/navidrome/music
+            type: Directory
