@@ -4,9 +4,14 @@ metadata:
   name: ejbca
 spec:
   ports:
-    - port: 8080
+    - name: http
+      port: 8080
       targetPort: 8080
       nodePort: 30289
+    - name: https
+      port: 8443
+      targetPort: 8443
+      nodePort: 30290
   selector:
     app: ejbca
   type: NodePort

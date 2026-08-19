@@ -19,5 +19,14 @@ spec:
             - secretRef:
                 name: ejbca-container-env
           ports:
-            - containerPort: 8080
-            - containerPort: 443
+            - name: http
+              containerPort: 8080
+            - name: https
+              containerPort: 8443
+          volumeMounts:
+            - name: ejbca-storage
+              mountPath: /mnt/persistent
+      volumes:
+        - name: ejbca-storage
+          persistentVolumeClaim:
+            claimName: ejbca-storage
