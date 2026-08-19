@@ -11,3 +11,4 @@ resources:
   - wallos
   - kubernetes-dashboard
   - navidrome
+  - ejbca

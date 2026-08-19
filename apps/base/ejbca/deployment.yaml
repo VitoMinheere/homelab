@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ejbca
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ejbca
+  template:
+    metadata:
+      labels:
+        app: ejbca
+    spec:
+      containers:
+        - name: ejbca
+          image: keyfactor/ejbca-ce:9.3.7
+          envFrom:
+            - secretRef:
+                name: ejbca-container-env
+          ports:
+            - name: http
+              containerPort: 8080
+            - name: https
+              containerPort: 8443
+          volumeMounts:
+            - name: ejbca-storage
+              mountPath: /mnt/persistent
+      volumes:
+        - name: ejbca-storage
+          persistentVolumeClaim:
+            claimName: ejbca-storage
