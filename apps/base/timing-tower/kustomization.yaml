@@ -6,3 +6,4 @@ resources:
   - configmap.yaml
   - deployment.yaml
   - cronjob.yaml
+  - service.yaml
