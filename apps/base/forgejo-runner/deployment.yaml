@@ -26,6 +26,7 @@ spec:
       containers:
       - args:
         - --tls=false
+        - --insecure-registry=192.168.2.24:30285
         env:
         - name: DOCKER_TLS_CERTDIR
           value: ""
