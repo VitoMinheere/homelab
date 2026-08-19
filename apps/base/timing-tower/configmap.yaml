@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: timing-tower-config
+  namespace: timing-tower
+data:
+  # Seed event id(s) the daily scrape job expands from (comma-separated).
+  # Sibling events at the same track/organizer are auto-discovered from
+  # each seed - see ontime_scraper.py's discover_events(). Default below
+  # is the Meppen/trackzone event this project started from.
+  SEED_EVENT_IDS: "2026-xwZcLReCdEaOGqPlVWQ2Q"
+  # "true" to also pick up other organizers at the same track (current
+  # season only - see ontime_scraper.py's docstring for why).
+  ANY_ORGANIZER: "false"
