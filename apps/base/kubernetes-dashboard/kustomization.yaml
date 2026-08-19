@@ -5,3 +5,7 @@ resources:
   - namespace.yaml
   - service.yaml
   - configmap.yaml
+  - networkpolicy.yaml
+  - rbac.yaml
+  - read-only-user.yaml
+

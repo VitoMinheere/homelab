@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wallos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wallos
+  template:
+    metadata:
+      labels:
+        app: wallos
+    spec:
+      containers:
+        - name: wallos
+          image: ghcr.io/ellite/wallos:5.4.4
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 80
+          env:
+            - name: TZ
+              value: "Europe/Amsterdam"
+          volumeMounts:
+            - name: wallos-storage
+              mountPath: /var/www/html/db
+              subPath: db
+            - name: wallos-storage
+              mountPath: /var/www/html/images/uploads/logos
+              subPath: logos
+      volumes:
+        - name: wallos-storage
+          persistentVolumeClaim:
+            claimName: wallos-storage
+
