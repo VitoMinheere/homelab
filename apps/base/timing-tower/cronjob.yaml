@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: timing-tower-scrape
+  namespace: timing-tower
+spec:
+  # Once a day at 03:17 (cluster-local time) - off-the-hour to avoid
+  # piling onto every other homelab cronjob that fires at :00.
+  schedule: "17 18 * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: scrape
+              image: 192.168.2.24:30285/vito/timing-tower:8281c08   # keep in sync with deployment.yaml's tag
+              command: ["python", "scrape_job.py"]
+              envFrom:
+                - configMapRef:
+                    name: ontime-config
+                - secretRef:
+                    name: ontime-db
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 96Mi
+                limits:
+                  cpu: 500m
+                  memory: 256Mi

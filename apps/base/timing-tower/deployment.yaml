@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timing-tower
+  namespace: timing-tower
+  labels:
+    app: timing-tower
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: timing-tower
+  template:
+    metadata:
+      labels:
+        app: timing-tower
+    spec:
+      containers:
+        - name: web
+          image: 192.168.2.24:30285/vito/timing-tower:8281c08   # keep in sync with deployment.yaml's tag
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: ontime-config
+            - secretRef:
+                name: ontime-db
+          readinessProbe:
+            httpGet:
+              path: /api/status
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/status
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 50m
+              memory: 96Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
