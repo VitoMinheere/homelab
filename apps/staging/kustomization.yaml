@@ -12,3 +12,4 @@ resources:
   - kubernetes-dashboard
   - navidrome
   - ejbca
+  - timing-tower
