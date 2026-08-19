@@ -22,9 +22,9 @@ spec:
             - containerPort: 8000
           envFrom:
             - configMapRef:
-                name: ontime-config
+                name: timing-tower-config
             - secretRef:
-                name: ontime-db
+                name: timing-tower-db
           readinessProbe:
             httpGet:
               path: /api/status

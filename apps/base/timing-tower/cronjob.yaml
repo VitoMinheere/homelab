@@ -22,9 +22,9 @@ spec:
               command: ["python", "scrape_job.py"]
               envFrom:
                 - configMapRef:
-                    name: ontime-config
+                    name: timing-tower-config
                 - secretRef:
-                    name: ontime-db
+                    name: timing-tower-db
               resources:
                 requests:
                   cpu: 50m
