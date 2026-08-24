@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: wallos
-          image: ghcr.io/ellite/wallos:5.4.4
+          image: ghcr.io/ellite/wallos:5.4.5
           resources:
             requests:
               memory: "256Mi"
