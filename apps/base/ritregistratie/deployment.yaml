@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ritregistratie
+  namespace: ritregistratie
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ritregistratie
+  template:
+    metadata:
+      labels:
+        app: ritregistratie
+    spec:
+      containers:
+        - name: ritregistratie
+          image: 192.168.2.24:30285/vito/ritregistratie:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            - name: PORT
+              value: "8000"
+          envFrom:
+            - secretRef:
+                name: ritregistratie-secrets
+          readinessProbe:
+            httpGet:
+              path: /login
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /login
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
