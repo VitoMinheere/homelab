@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: grocy
-          image: lscr.io/linuxserver/grocy:latest
+          image: lscr.io/linuxserver/grocy:4.6.0
           envFrom:
             - configMapRef:
                 name: grocy-configmap

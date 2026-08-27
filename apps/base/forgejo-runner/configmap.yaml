@@ -37,4 +37,4 @@ data:
 kind: ConfigMap
 metadata:
   name: forgejo-runner-config
-  namespace: forgejo-runner
+  namespace: forgejo

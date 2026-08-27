@@ -9,7 +9,7 @@ resources:
   - forgejo
   - forgejo-runner
   - wallos
-  - kubernetes-dashboard
+  # - kubernetes-dashboard
   - navidrome
   # - ejbca
   - timing-tower

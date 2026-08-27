@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: forgejo-runner
     app.kubernetes.io/name: forgejo-runner
   name: forgejo-runner
-  namespace: forgejo-runner
+  namespace: forgejo
 spec:
   replicas: 1
   selector:
