@@ -11,6 +11,6 @@ resources:
   - wallos
   - kubernetes-dashboard
   - navidrome
-  - ejbca
+  # - ejbca
   - timing-tower
   - ritregistratie
