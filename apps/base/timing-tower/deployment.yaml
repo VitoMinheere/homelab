@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: 192.168.2.24:30285/vito/timing-tower:8281c08   # keep in sync with deployment.yaml's tag
+          image: 192.168.2.24:30285/vito/timing-tower:latest
           ports:
             - containerPort: 8000
           envFrom:
