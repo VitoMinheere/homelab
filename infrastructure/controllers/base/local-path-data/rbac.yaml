@@ -1,0 +1,59 @@
+# Second, independent copy of the rancher.io/local-path RBAC (upstream:
+# https://github.com/rancher/local-path-provisioner/blob/master/deploy/local-path-storage.yaml),
+# renamed throughout so it doesn't collide with k3s's built-in
+# local-path-provisioner (which owns the unprefixed local-path-* names in
+# kube-system).
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: local-path-data-provisioner-role
+  namespace: local-path-storage
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch", "create", "patch", "update", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: local-path-data-provisioner-role
+rules:
+  - apiGroups: [""]
+    resources: ["nodes", "persistentvolumeclaims", "configmaps", "pods", "pods/log"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["persistentvolumes"]
+    verbs: ["get", "list", "watch", "create", "patch", "update", "delete"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "patch"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["storageclasses"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: local-path-data-provisioner-bind
+  namespace: local-path-storage
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: local-path-data-provisioner-role
+subjects:
+  - kind: ServiceAccount
+    name: local-path-data-provisioner
+    namespace: local-path-storage
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: local-path-data-provisioner-bind
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: local-path-data-provisioner-role
+subjects:
+  - kind: ServiceAccount
+    name: local-path-data-provisioner
+    namespace: local-path-storage

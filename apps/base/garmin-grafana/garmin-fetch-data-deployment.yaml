@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: garmin-fetch-data
+  namespace: garmin-grafana
+  labels:
+    app: garmin-fetch-data
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: garmin-fetch-data
+  template:
+    metadata:
+      labels:
+        app: garmin-fetch-data
+    spec:
+      containers:
+        - name: garmin-fetch-data
+          image: thisisarpanghosh/garmin-fetch-data:v0.5.0
+          envFrom:
+            - configMapRef:
+                name: garmin-fetch-data-config
+            - secretRef:
+                name: garmin-grafana-secrets
+          volumeMounts:
+            - name: garmin-tokens-storage
+              mountPath: /home/appuser/.garminconnect
+      volumes:
+        - name: garmin-tokens-storage
+          persistentVolumeClaim:
+            claimName: garmin-tokens-storage

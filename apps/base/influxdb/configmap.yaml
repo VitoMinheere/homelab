@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: influxdb-config
+  namespace: influxdb
+data:
+  # Only auto-creates this one database, and only on first boot against an
+  # empty data volume (the official influxdb:1.x entrypoint behavior).
+  # Garmin is the first consumer of this shared instance; if/when other
+  # services start writing here, create their databases independently
+  # (e.g. `influx -execute 'CREATE DATABASE ...'` or the HTTP API) rather
+  # than relying on this variable.
+  INFLUXDB_DB: "GarminStats"
+  INFLUXDB_DATA_INDEX_VERSION: "tsi1"
