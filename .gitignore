@@ -1,0 +1,12 @@
+# Encrypted secret.yaml files are committed (Flux decrypts them); these never are.
+
+# age private keys
+*.agekey
+keys.txt
+
+# Decrypted copies, e.g. `sops -d secret.yaml > secret.dec.yaml`
+*.dec.yaml
+*.dec.yml
+*.decrypted.yaml
+*.decrypted.yml
+.sops.yaml

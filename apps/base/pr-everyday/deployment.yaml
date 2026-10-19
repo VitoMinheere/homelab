@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pr-everyday
+  namespace: pr-everyday
+  labels:
+    app: pr-everyday
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pr-everyday
+  template:
+    metadata:
+      labels:
+        app: pr-everyday
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+      containers:
+        - name: pr-everyday
+          image: 192.168.2.24:30285/vito/pr_everyday:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            # "Today" (daily challenge, cooldowns, session dates) follows this zone.
+            - name: TZ
+              value: Europe/Amsterdam
+          envFrom:
+            - secretRef:
+                name: pr-everyday-db
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 50m
+              memory: 96Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
