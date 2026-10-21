@@ -149,7 +149,7 @@
       "title": "Sleep",
       "gridPos": {
         "h": 5,
-        "w": 6,
+        "w": 5,
         "x": 0,
         "y": 6
       },
@@ -256,11 +256,11 @@
         "uid": "daily-dashboard-pg"
       },
       "type": "stat",
-      "title": "HRV",
+      "title": "Body battery",
       "gridPos": {
         "h": 5,
-        "w": 6,
-        "x": 6,
+        "w": 5,
+        "x": 5,
         "y": 6
       },
       "targets": [
@@ -273,7 +273,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       coalesce(initcap(hrv_garmin_status) || coalesce(', 7d avg ' || hrv_weekly_avg || ' ms', ''), 'No HRV data') AS metric,\n       dashboard.status_level(hrv_status) AS value\nFROM dashboard.health_daily\nWHERE day = dashboard.local_today()"
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       coalesce(body_battery_at_wake || ' at wake', 'No body battery data') AS metric,\n       dashboard.status_level(body_battery_status) AS value\nFROM dashboard.health_daily\nWHERE day = dashboard.local_today()"
         }
       ],
       "fieldConfig": {
@@ -369,8 +369,8 @@
       "title": "Resting HR",
       "gridPos": {
         "h": 5,
-        "w": 6,
-        "x": 12,
+        "w": 5,
+        "x": 10,
         "y": 6
       },
       "targets": [
@@ -476,11 +476,121 @@
         "uid": "daily-dashboard-pg"
       },
       "type": "stat",
+      "title": "Stress",
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 15,
+        "y": 6
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "daily-dashboard-pg"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       CASE WHEN stress_status = 'pending' THEN 'Judged after today' ELSE coalesce(stress_high_pct || '% high, avg ' || stress_avg, 'No stress data') END AS metric,\n       dashboard.status_level(stress_status) AS value\nFROM dashboard.health_daily\nWHERE day = dashboard.local_today()"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "No data",
+                  "color": "#8e8e8e",
+                  "index": 0
+                },
+                "1": {
+                  "text": "n/a",
+                  "color": "blue",
+                  "index": 1
+                },
+                "2": {
+                  "text": "Green",
+                  "color": "green",
+                  "index": 2
+                },
+                "3": {
+                  "text": "Amber",
+                  "color": "orange",
+                  "index": 3
+                },
+                "4": {
+                  "text": "Red",
+                  "color": "red",
+                  "index": 4
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#8e8e8e",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 1
+              },
+              {
+                "color": "green",
+                "value": 2
+              },
+              {
+                "color": "orange",
+                "value": 3
+              },
+              {
+                "color": "red",
+                "value": 4
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "textMode": "value_and_name",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      }
+    },
+    {
+      "id": 6,
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "daily-dashboard-pg"
+      },
+      "type": "stat",
       "title": "Training",
       "gridPos": {
         "h": 5,
-        "w": 6,
-        "x": 18,
+        "w": 4,
+        "x": 20,
         "y": 6
       },
       "targets": [
@@ -580,7 +690,7 @@
       }
     },
     {
-      "id": 6,
+      "id": 7,
       "datasource": {
         "type": "grafana-postgresql-datasource",
         "uid": "daily-dashboard-pg"
@@ -690,7 +800,7 @@
       }
     },
     {
-      "id": 7,
+      "id": 8,
       "datasource": {
         "type": "grafana-postgresql-datasource",
         "uid": "daily-dashboard-pg"
@@ -713,7 +823,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       dashboard.status_level(overall_status)    AS \"Overall\",\n       dashboard.status_level(sleep_status)      AS \"Sleep\",\n       dashboard.status_level(hrv_status)        AS \"HRV\",\n       dashboard.status_level(resting_hr_status) AS \"Resting HR\",\n       dashboard.status_level(training_status)   AS \"Training\"\nFROM dashboard.health_daily\nWHERE day BETWEEN $__timeFrom()::timestamptz::date AND $__timeTo()::timestamptz::date\nORDER BY day"
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       dashboard.status_level(overall_status)    AS \"Overall\",\n       dashboard.status_level(sleep_status)      AS \"Sleep\",\n       dashboard.status_level(body_battery_status) AS \"Body battery\",\n       dashboard.status_level(resting_hr_status) AS \"Resting HR\",\n       dashboard.status_level(stress_status)     AS \"Stress\",\n       dashboard.status_level(training_status)   AS \"Training\"\nFROM dashboard.health_daily\nWHERE day BETWEEN $__timeFrom()::timestamptz::date AND $__timeTo()::timestamptz::date\nORDER BY day"
         }
       ],
       "fieldConfig": {
@@ -802,7 +912,7 @@
       }
     },
     {
-      "id": 8,
+      "id": 9,
       "datasource": {
         "type": "grafana-postgresql-datasource",
         "uid": "daily-dashboard-pg"
@@ -825,7 +935,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT day AS \"Day\",\n       overall_status AS \"Overall\",\n       reasons AS \"Reasons\",\n       sleep_hours AS \"Sleep (h)\",\n       hrv_garmin_status AS \"HRV\",\n       resting_hr AS \"Resting HR\",\n       resting_hr_baseline AS \"RHR baseline\",\n       training_done AS \"Training done\",\n       body_battery_max AS \"Body battery max\",\n       training_readiness AS \"Readiness\",\n       steps AS \"Steps\",\n       weight_avg_kg AS \"Weight 7d (kg)\"\nFROM dashboard.health_daily\nWHERE day BETWEEN $__timeFrom()::timestamptz::date AND $__timeTo()::timestamptz::date\nORDER BY day DESC"
+          "rawSql": "SELECT day AS \"Day\",\n       overall_status AS \"Overall\",\n       reasons AS \"Reasons\",\n       sleep_hours AS \"Sleep (h)\",\n       body_battery_at_wake AS \"Body battery at wake\",\n       resting_hr AS \"Resting HR\",\n       resting_hr_baseline AS \"RHR baseline\",\n       stress_high_pct AS \"High stress %\",\n       training_done AS \"Training done\",\n       steps AS \"Steps\",\n       weight_avg_kg AS \"Weight 7d (kg)\"\nFROM dashboard.health_daily\nWHERE day BETWEEN $__timeFrom()::timestamptz::date AND $__timeTo()::timestamptz::date\nORDER BY day DESC"
         }
       ],
       "fieldConfig": {
