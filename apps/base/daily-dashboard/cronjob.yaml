@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: garmin-ingest
+  namespace: daily-dashboard
+spec:
+  # Morning run picks up last night's sleep/HRV, evening run the day's
+  # activities. Each run re-fetches the last 3 days, so a late sync is fine.
+  schedule: "0 10,22 * * *"
+  timeZone: Europe/Amsterdam
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 3600
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      # Low on purpose: a retry can mean another Garmin login. The app also
+      # refuses repeated password logins within GARMIN_LOGIN_COOLDOWN_HOURS.
+      backoffLimit: 1
+      activeDeadlineSeconds: 1800
+      template:
+        spec:
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 10001
+            fsGroup: 10001
+          containers:
+            - name: garmin-ingest
+              image: 192.168.2.24:30285/vito/daily-dashboard:latest
+              imagePullPolicy: Always
+              envFrom:
+                - secretRef:
+                    name: daily-dashboard-garmin
+              env:
+                - name: GARMINTOKENS
+                  value: /tokens
+              volumeMounts:
+                - name: garmin-tokens
+                  mountPath: /tokens
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 128Mi
+                limits:
+                  cpu: 500m
+                  memory: 384Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+          volumes:
+            - name: garmin-tokens
+              persistentVolumeClaim:
+                claimName: garmin-tokens

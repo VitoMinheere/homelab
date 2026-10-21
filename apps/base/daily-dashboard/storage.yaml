@@ -1,0 +1,13 @@
+# Garmin Connect token store. Keeps the job on token refreshes instead of a
+# password login every run (Garmin rate-limits and may block those).
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: garmin-tokens
+  namespace: daily-dashboard
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 64Mi
