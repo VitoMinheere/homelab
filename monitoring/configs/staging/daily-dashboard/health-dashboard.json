@@ -1,11 +1,12 @@
 {
   "uid": "daily-dashboard-health",
-  "title": "Daily dashboard: Health",
-  "description": "Garmin-based health light. Thresholds live in dashboard.health_config; see the daily-dashboard README.",
+  "title": "Daily dashboard",
+  "description": "Health (Garmin) and mobility (ritregistratie) lights. Thresholds live in dashboard.health_config and dashboard.mobility_config; see the daily-dashboard README.",
   "tags": [
     "daily-dashboard",
     "health",
-    "garmin"
+    "garmin",
+    "mobility"
   ],
   "timezone": "Europe/Amsterdam",
   "editable": true,
@@ -1033,6 +1034,1235 @@
               {
                 "id": "custom.minWidth",
                 "value": 360
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "fields": ""
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "row",
+      "title": "Mobility",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 38
+      },
+      "panels": []
+    },
+    {
+      "id": 11,
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "daily-dashboard-pg"
+      },
+      "type": "stat",
+      "title": "Mobility today",
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 39
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "daily-dashboard-pg"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       reasons AS metric,\n       dashboard.status_level(overall_status) AS value\nFROM dashboard.mobility_daily\nWHERE day = dashboard.local_today()"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "No data",
+                  "color": "#8e8e8e",
+                  "index": 0
+                },
+                "1": {
+                  "text": "n/a",
+                  "color": "blue",
+                  "index": 1
+                },
+                "2": {
+                  "text": "Green",
+                  "color": "green",
+                  "index": 2
+                },
+                "3": {
+                  "text": "Amber",
+                  "color": "orange",
+                  "index": 3
+                },
+                "4": {
+                  "text": "Red",
+                  "color": "red",
+                  "index": 4
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#8e8e8e",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 1
+              },
+              {
+                "color": "green",
+                "value": 2
+              },
+              {
+                "color": "orange",
+                "value": 3
+              },
+              {
+                "color": "red",
+                "value": 4
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "textMode": "value_and_name",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 22,
+          "valueSize": 48
+        }
+      },
+      "description": "Worst of the cost and car-km lights. The to-dos don't count. Settings: dashboard.mobility_config and dashboard.vehicles (daily-dashboard README)."
+    },
+    {
+      "id": 12,
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "daily-dashboard-pg"
+      },
+      "type": "stat",
+      "title": "Cost (7 days)",
+      "gridPos": {
+        "h": 5,
+        "w": 7,
+        "x": 0,
+        "y": 44
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "daily-dashboard-pg"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       'EUR ' || round(total_cost_7d) || ' of ' || trim_scale(cost_budget_7d) || ' (' || round(cost_7d_pct) || '%)' AS metric,\n       dashboard.status_level(cost_status) AS value\nFROM dashboard.mobility_daily\nWHERE day = dashboard.local_today()"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "No data",
+                  "color": "#8e8e8e",
+                  "index": 0
+                },
+                "1": {
+                  "text": "n/a",
+                  "color": "blue",
+                  "index": 1
+                },
+                "2": {
+                  "text": "Green",
+                  "color": "green",
+                  "index": 2
+                },
+                "3": {
+                  "text": "Amber",
+                  "color": "orange",
+                  "index": 3
+                },
+                "4": {
+                  "text": "Red",
+                  "color": "red",
+                  "index": 4
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#8e8e8e",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 1
+              },
+              {
+                "color": "green",
+                "value": 2
+              },
+              {
+                "color": "orange",
+                "value": 3
+              },
+              {
+                "color": "red",
+                "value": 4
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "textMode": "value_and_name",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "description": "Variable + fixed cost of the last 7 days vs 7 x daily budget. Green <= 100 %, amber <= 120 %."
+    },
+    {
+      "id": 13,
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "daily-dashboard-pg"
+      },
+      "type": "stat",
+      "title": "Car km (7 days)",
+      "gridPos": {
+        "h": 5,
+        "w": 7,
+        "x": 7,
+        "y": 44
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "daily-dashboard-pg"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       car_km_7d || ' of ' || trim_scale(weekly_car_km_target) || ' km' AS metric,\n       dashboard.status_level(car_km_status) AS value\nFROM dashboard.mobility_daily\nWHERE day = dashboard.local_today()"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "No data",
+                  "color": "#8e8e8e",
+                  "index": 0
+                },
+                "1": {
+                  "text": "n/a",
+                  "color": "blue",
+                  "index": 1
+                },
+                "2": {
+                  "text": "Green",
+                  "color": "green",
+                  "index": 2
+                },
+                "3": {
+                  "text": "Amber",
+                  "color": "orange",
+                  "index": 3
+                },
+                "4": {
+                  "text": "Red",
+                  "color": "red",
+                  "index": 4
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#8e8e8e",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 1
+              },
+              {
+                "color": "green",
+                "value": 2
+              },
+              {
+                "color": "orange",
+                "value": 3
+              },
+              {
+                "color": "red",
+                "value": 4
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "textMode": "value_and_name",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "description": "Km of vehicles that count as a car, last 7 days, vs the weekly target. Amber up to 125 %."
+    },
+    {
+      "id": 14,
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "daily-dashboard-pg"
+      },
+      "type": "stat",
+      "title": "To do: keep-alive",
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 14,
+        "y": 44
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "daily-dashboard-pg"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       coalesce(keepalive_vehicle || ', ' || keepalive_days_since || ' days since last trip', 'No trip logged yet') AS metric,\n       dashboard.status_level(keepalive_status) AS value\nFROM dashboard.mobility_daily\nWHERE day = dashboard.local_today()"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "No data",
+                  "color": "#8e8e8e",
+                  "index": 0
+                },
+                "1": {
+                  "text": "n/a",
+                  "color": "blue",
+                  "index": 1
+                },
+                "2": {
+                  "text": "Green",
+                  "color": "green",
+                  "index": 2
+                },
+                "3": {
+                  "text": "Amber",
+                  "color": "orange",
+                  "index": 3
+                },
+                "4": {
+                  "text": "Red",
+                  "color": "red",
+                  "index": 4
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#8e8e8e",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 1
+              },
+              {
+                "color": "green",
+                "value": 2
+              },
+              {
+                "color": "orange",
+                "value": 3
+              },
+              {
+                "color": "red",
+                "value": 4
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "textMode": "value_and_name",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "transparent": true,
+      "description": "Days since the keep-alive vehicle (V220) was driven. Amber from 10, red from 14. Doesn't affect the overall status."
+    },
+    {
+      "id": 15,
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "daily-dashboard-pg"
+      },
+      "type": "stat",
+      "title": "To do: log trip",
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 19,
+        "y": 44
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "daily-dashboard-pg"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       CASE WHEN NOT is_office_day THEN 'Not an office day' WHEN registration_status = 'green' THEN 'Business trip logged' ELSE 'No business trip logged' END AS metric,\n       dashboard.status_level(registration_status) AS value\nFROM dashboard.mobility_daily\nWHERE day = dashboard.local_today()"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "No data",
+                  "color": "#8e8e8e",
+                  "index": 0
+                },
+                "1": {
+                  "text": "n/a",
+                  "color": "blue",
+                  "index": 1
+                },
+                "2": {
+                  "text": "Green",
+                  "color": "green",
+                  "index": 2
+                },
+                "3": {
+                  "text": "Amber",
+                  "color": "orange",
+                  "index": 3
+                },
+                "4": {
+                  "text": "Red",
+                  "color": "red",
+                  "index": 4
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#8e8e8e",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 1
+              },
+              {
+                "color": "green",
+                "value": 2
+              },
+              {
+                "color": "orange",
+                "value": 3
+              },
+              {
+                "color": "red",
+                "value": 4
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "textMode": "value_and_name",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "transparent": true,
+      "description": "On office days (Tue, Thu) a business trip should be logged in ritregistratie. Doesn't affect the overall status."
+    },
+    {
+      "id": 16,
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "daily-dashboard-pg"
+      },
+      "type": "bargauge",
+      "title": "Today's km per vehicle",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 49
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "daily-dashboard-pg"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       vehicle AS metric,\n       km AS value\nFROM dashboard.mobility_vehicle_daily\nWHERE day = dashboard.local_today()\n  AND (active OR km > 0)\nORDER BY vehicle"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "lengthkm",
+          "min": 0,
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "displayMode": "basic",
+        "showUnfilled": true,
+        "valueMode": "color",
+        "namePlacement": "left",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      }
+    },
+    {
+      "id": 17,
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "daily-dashboard-pg"
+      },
+      "type": "stat",
+      "title": "Petrol (7 days)",
+      "description": "Rolling 7-day total; the sparkline shows it over the dashboard's time range. Shown, not judged.",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 49
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "daily-dashboard-pg"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       petrol_l_7d AS value\nFROM dashboard.mobility_daily\nWHERE day BETWEEN $__timeFrom()::timestamptz::date AND $__timeTo()::timestamptz::date\nORDER BY day"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "litre",
+          "decimals": 1,
+          "displayName": "Petrol (7 days)",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "purple"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "textMode": "value",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      }
+    },
+    {
+      "id": 18,
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "daily-dashboard-pg"
+      },
+      "type": "stat",
+      "title": "Diesel (7 days)",
+      "description": "Rolling 7-day total; the sparkline shows it over the dashboard's time range. Shown, not judged.",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 49
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "daily-dashboard-pg"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       diesel_l_7d AS value\nFROM dashboard.mobility_daily\nWHERE day BETWEEN $__timeFrom()::timestamptz::date AND $__timeTo()::timestamptz::date\nORDER BY day"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "litre",
+          "decimals": 1,
+          "displayName": "Diesel (7 days)",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "yellow"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "yellow",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "textMode": "value",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      }
+    },
+    {
+      "id": 19,
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "daily-dashboard-pg"
+      },
+      "type": "stat",
+      "title": "Electricity (7 days)",
+      "description": "Rolling 7-day total; the sparkline shows it over the dashboard's time range. Shown, not judged.",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 49
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "daily-dashboard-pg"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       electricity_kwh_7d AS value\nFROM dashboard.mobility_daily\nWHERE day BETWEEN $__timeFrom()::timestamptz::date AND $__timeTo()::timestamptz::date\nORDER BY day"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "kwatth",
+          "decimals": 1,
+          "displayName": "Electricity (7 days)",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "textMode": "value",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      }
+    },
+    {
+      "id": 20,
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "daily-dashboard-pg"
+      },
+      "type": "state-timeline",
+      "title": "Mobility, last 30 days",
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 57
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "daily-dashboard-pg"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       dashboard.status_level(overall_status)      AS \"Overall\",\n       dashboard.status_level(cost_status)         AS \"Cost\",\n       dashboard.status_level(car_km_status)       AS \"Car km\",\n       dashboard.status_level(keepalive_status)    AS \"To do: keep-alive\",\n       dashboard.status_level(registration_status) AS \"To do: log trip\"\nFROM dashboard.mobility_daily\nWHERE day BETWEEN $__timeFrom()::timestamptz::date AND $__timeTo()::timestamptz::date\nORDER BY day"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "No data",
+                  "color": "#8e8e8e",
+                  "index": 0
+                },
+                "1": {
+                  "text": "n/a",
+                  "color": "blue",
+                  "index": 1
+                },
+                "2": {
+                  "text": "Green",
+                  "color": "green",
+                  "index": 2
+                },
+                "3": {
+                  "text": "Amber",
+                  "color": "orange",
+                  "index": 3
+                },
+                "4": {
+                  "text": "Red",
+                  "color": "red",
+                  "index": 4
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#8e8e8e",
+                "value": null
+              },
+              {
+                "color": "blue",
+                "value": 1
+              },
+              {
+                "color": "green",
+                "value": 2
+              },
+              {
+                "color": "orange",
+                "value": 3
+              },
+              {
+                "color": "red",
+                "value": 4
+              }
+            ]
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "fillOpacity": 85,
+            "lineWidth": 1
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "mergeValues": false,
+        "showValue": "never",
+        "alignValue": "center",
+        "rowHeight": 0.85,
+        "legend": {
+          "showLegend": false,
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 21,
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "daily-dashboard-pg"
+      },
+      "type": "timeseries",
+      "title": "Cost per day",
+      "description": "Variable (km x consumption x price) and fixed (yearly fixed costs of active vehicles / 365).",
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 64
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "daily-dashboard-pg"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       variable_cost AS \"Variable\",\n       fixed_cost AS \"Fixed\"\nFROM dashboard.mobility_daily\nWHERE day BETWEEN $__timeFrom()::timestamptz::date AND $__timeTo()::timestamptz::date\nORDER BY day"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyEUR",
+          "min": 0,
+          "decimals": 2,
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "lineWidth": 1,
+            "barAlignment": 0,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            },
+            "showPoints": "never",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Variable"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "blue"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Fixed"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#8e8e8e"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 22,
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "daily-dashboard-pg"
+      },
+      "type": "table",
+      "title": "Mobility details",
+      "gridPos": {
+        "h": 14,
+        "w": 24,
+        "x": 0,
+        "y": 73
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "daily-dashboard-pg"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT day AS \"Day\",\n       overall_status AS \"Overall\",\n       reasons AS \"Reasons\",\n       total_km AS \"Km\",\n       car_km AS \"Car km\",\n       business_km AS \"Business km\",\n       private_km AS \"Private km\",\n       total_cost AS \"Cost\",\n       business_cost AS \"Business cost\",\n       private_cost AS \"Private cost\",\n       reimbursement AS \"Reimbursement\"\nFROM dashboard.mobility_daily\nWHERE day BETWEEN $__timeFrom()::timestamptz::date AND $__timeTo()::timestamptz::date\nORDER BY day DESC"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Overall"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "grey": {
+                        "text": "No data",
+                        "color": "#8e8e8e",
+                        "index": 0
+                      },
+                      "neutral": {
+                        "text": "n/a",
+                        "color": "blue",
+                        "index": 1
+                      },
+                      "pending": {
+                        "text": "Pending",
+                        "color": "blue",
+                        "index": 2
+                      },
+                      "green": {
+                        "text": "Green",
+                        "color": "green",
+                        "index": 3
+                      },
+                      "amber": {
+                        "text": "Amber",
+                        "color": "orange",
+                        "index": 4
+                      },
+                      "red": {
+                        "text": "Red",
+                        "color": "red",
+                        "index": 5
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "basic"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Day"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 110
+              },
+              {
+                "id": "unit",
+                "value": "time:YYYY-MM-DD ddd"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Reasons"
+            },
+            "properties": [
+              {
+                "id": "custom.minWidth",
+                "value": 360
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cost"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyEUR"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Business cost"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyEUR"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Private cost"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyEUR"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Reimbursement"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyEUR"
               }
             ]
           }
