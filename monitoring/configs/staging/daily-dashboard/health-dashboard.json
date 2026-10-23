@@ -1631,14 +1631,16 @@
         "type": "grafana-postgresql-datasource",
         "uid": "daily-dashboard-pg"
       },
-      "type": "bargauge",
-      "title": "Today's km per vehicle",
+      "type": "timeseries",
+      "title": "km per vehicle (7 days)",
+      "description": "km per day per vehicle over the last 7 days, today included. Only vehicles that drove in that week are shown.",
       "gridPos": {
         "h": 8,
         "w": 6,
         "x": 0,
         "y": 49
       },
+      "timeFrom": "7d",
       "targets": [
         {
           "refId": "A",
@@ -1649,7 +1651,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       vehicle AS metric,\n       km AS value\nFROM dashboard.mobility_vehicle_daily\nWHERE day = dashboard.local_today()\n  AND (active OR km > 0)\nORDER BY vehicle"
+          "rawSql": "SELECT (day::timestamp AT TIME ZONE 'Europe/Amsterdam') AS time,\n       vehicle AS metric,\n       km AS value\nFROM (\n    SELECT day, vehicle, km, sum(km) OVER (PARTITION BY vehicle) AS week_km\n    FROM dashboard.mobility_vehicle_daily\n    WHERE day > dashboard.local_today() - 7\n      AND day <= dashboard.local_today()\n) w\nWHERE week_km > 0\nORDER BY day, vehicle"
         }
       ],
       "fieldConfig": {
@@ -1658,33 +1660,94 @@
           "min": 0,
           "decimals": 0,
           "color": {
-            "mode": "fixed",
-            "fixedColor": "blue"
+            "mode": "palette-classic"
           },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
+          "custom": {
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "lineWidth": 1,
+            "barAlignment": 0,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            },
+            "showPoints": "never",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "V220"
+            },
+            "properties": [
               {
-                "color": "blue",
-                "value": null
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "blue"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ioniq Electric"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "green"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Energica"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "purple"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CFMoto 675"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "orange"
+                }
               }
             ]
           }
-        },
-        "overrides": []
+        ]
       },
       "options": {
-        "orientation": "horizontal",
-        "displayMode": "basic",
-        "showUnfilled": true,
-        "valueMode": "color",
-        "namePlacement": "left",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
         }
       }
     },
