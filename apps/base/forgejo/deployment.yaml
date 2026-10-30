@@ -18,8 +18,15 @@ spec:
           envFrom:
             - secretRef:
                 name: forgejo-container-env
+          env:
+            # Port shown in SSH clone URLs; the NodePort, not the container port
+            - name: FORGEJO__server__SSH_PORT
+              value: "30291"
           ports:
-            - containerPort: 3000
+            - name: http
+              containerPort: 3000
+            - name: ssh
+              containerPort: 22
           volumeMounts:
             - name: forgejo-storage
               mountPath: /data

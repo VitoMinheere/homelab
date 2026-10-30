@@ -4,9 +4,14 @@ metadata:
   name: forgejo
 spec:
   ports:
-    - port: 3000
+    - name: http
+      port: 3000
       targetPort: 3000
       nodePort: 30285
+    - name: ssh
+      port: 22
+      targetPort: 22
+      nodePort: 30291
   selector:
     app: forgejo
   type: NodePort
