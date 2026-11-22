@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: ejbca
-          image: keyfactor/ejbca-ce:9.3.7
+          image: keyfactor/ejbca-ce:9.6.3
           envFrom:
             - secretRef:
                 name: ejbca-container-env
