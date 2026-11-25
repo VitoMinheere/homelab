@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+# Second runner, registered for the Claude user (sees Claude/quill etc.).
+# Egress is covered by the forgejo-runner NetworkPolicy (selects policy-type: app
+# in the forgejo namespace): DNS, 80/443 for Docker Hub + PyPI, and 192.168.2.0/24:30285.
+resources:
+  - deployment.yaml
+  - configmap.yaml
+  - storage.yaml
