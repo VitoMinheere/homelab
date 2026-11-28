@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: lubelogger
-          image: hargata/lubelogger:v1.7.4
+          image: hargata/lubelogger:v1.7.5
           envFrom:
             - secretRef:
                 name: lubelogger-container-env
